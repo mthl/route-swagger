@@ -37,7 +37,7 @@
               (assoc context :response
                              (case res
                                "" (redirect (str path-info "index.html"))
-                               "config.json" (response (json/encode {:url (apply url-for ::doc/swagger-json path-opts)}))
+                               "config.json" (response (json/encode {:url (apply @url-for ::doc/swagger-json path-opts)}))
                                (resource-response res {:root "swagger-ui"})))))})
 
 (defn coerce-request
