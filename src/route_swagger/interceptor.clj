@@ -3,7 +3,8 @@
             [route-swagger.schema :as schema]
             [ring.util.response :refer [response resource-response redirect]]
             [ring.swagger.swagger2 :as spec]
-            [ring.util.http-status :as status]))
+            [ring.util.http-status :as status]
+            [cheshire.core :as json]))
 
 (defn- default-json-converter [swagger-object]
   (spec/swagger-json
@@ -36,9 +37,7 @@
               (assoc context :response
                              (case res
                                "" (redirect (str path-info "index.html"))
-                               "conf.js" (response (str "window.API_CONF = {url: \""
-                                                        (apply url-for ::doc/swagger-json path-opts)
-                                                        "\"};"))
+                               "config.json" (response (json/encode {:url (apply url-for ::doc/swagger-json path-opts)}))
                                (resource-response res {:root "swagger-ui"})))))})
 
 (defn coerce-request
