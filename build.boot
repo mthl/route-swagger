@@ -45,8 +45,8 @@
 
 (def +version+
   (let [{:keys [exit out]} (shell/sh "git" "describe" "--tags")
-        tag (second (re-find #"v(.*)\n" out))]
-    (if (zero? exit)
+        tag (second (re-find #"(\d+\.\d+\.\d+).*\n" out))]
+    (if (and (zero? exit) tag)
       (if (.contains tag "-")
         (str tag "-SNAPSHOT")
         tag)
